@@ -1,0 +1,192 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
+
+/* Fondo general moderno */
+body {
+  font-family: 'Montserrat', sans-serif;
+  background: linear-gradient(135deg, #13151a 0%, #1e222d 100%);
+  color: #ffffff;
+  margin: 0;
+  padding: 40px 20px;
+  min-height: 100vh;
+}
+
+/* Tarjeta principal con efecto "Glassmorphism" (vidrio) */
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  padding: 30px 40px;
+  border-radius: 15px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Título neón */
+h1 {
+  text-align: center;
+  color: #00ff88;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 30px;
+  font-weight: 700;
+  text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+}
+
+/* Contenedor del Formulario */
+#socioForm {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 40px;
+  padding: 25px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.form-group {
+  display: flex;
+  gap: 15px;
+}
+
+/* Inputs y Selects */
+.form-group input, .form-group select {
+  flex: 1;
+  padding: 12px 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: white;
+  font-size: 14px;
+  outline: none;
+  font-family: 'Montserrat', sans-serif;
+  transition: all 0.3s ease;
+}
+
+.form-group input::placeholder {
+  color: #888;
+}
+
+/* Efecto al hacer clic en un input */
+.form-group input:focus, .form-group select:focus {
+  border-color: #00ff88;
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 8px rgba(0, 255, 136, 0.2);
+}
+
+/* Las opciones del menú desplegable */
+.form-group select option {
+  background: #1e222d;
+  color: white;
+}
+
+/* Botón Principal */
+button {
+  padding: 12px 20px;
+  background: #00ff88;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background: #00cc6a;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 255, 136, 0.4);
+}
+
+/* Botón Cancelar */
+#btnCancelar {
+  background: #ff4757;
+  color: white;
+  margin-top: 10px;
+}
+
+#btnCancelar:hover {
+  background: #ff6b81;
+  box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4);
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Tabla de Socios */
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 8px;
+  margin-top: 20px;
+}
+
+th, td {
+  padding: 15px;
+  text-align: left;
+}
+
+th {
+  background-color: transparent;
+  color: #00ff88;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 13px;
+  letter-spacing: 1px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+td {
+  background: rgba(0, 0, 0, 0.25);
+  color: #ddd;
+}
+
+/* Bordes redondeados para las filas de la tabla */
+tr td:first-child {
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+tr td:last-child {
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+tr:hover td {
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+}
+
+/* Botones de acción en la tabla */
+.btn-editar, .btn-eliminar {
+  padding: 8px 12px;
+  font-size: 12px;
+  border-radius: 5px;
+  margin-right: 5px;
+  text-transform: none;
+  font-weight: 600;
+}
+
+.btn-editar {
+  background: #feca57;
+  color: #000;
+}
+
+.btn-editar:hover {
+  background: #ff9f43;
+  box-shadow: 0 4px 10px rgba(254, 202, 87, 0.3);
+}
+
+.btn-eliminar {
+  background: #ff4757;
+  color: white;
+}
+
+.btn-eliminar:hover {
+  background: #ff6b81;
+  box-shadow: 0 4px 10px rgba(255, 71, 87, 0.3);
+}

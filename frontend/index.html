@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de Gimnasio - UTN</title>
+  <link rel="stylesheet" href="./src/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Gestión de Socios - Gimnasio</h1>
+
+    <form id="socioForm">
+      <input type="hidden" id="socioId">
+      <div class="form-group">
+        <input type="text" id="nombre" placeholder="Nombre" required>
+        <input type="text" id="apellido" placeholder="Apellido" required>
+      </div>
+      <div class="form-group">
+        <input type="text" id="dni" placeholder="DNI" required>
+        <select id="plan" required>
+          <option value="">Seleccionar Plan</option>
+          <option value="Pase Libre">Pase Libre</option>
+          <option value="Musculación">Musculación</option>
+          <option value="Crossfit">Crossfit</option>
+        </select>
+      </div>
+      <button type="submit" id="btnGuardar">Guardar Socio</button>
+      <button type="button" id="btnCancelar" class="hidden">Cancelar</button>
+    </form>
+
+    <table id="tablaSocios">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>DNI</th>
+          <th>Plan</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        </tbody>
+    </table>
+  </div>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
