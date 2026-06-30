@@ -7,93 +7,171 @@ const tablaBody = document.querySelector('#tablaSocios tbody');
 const socioIdInput = document.getElementById('socioId');
 const btnCancelar = document.getElementById('btnCancelar');
 const btnGuardar = document.getElementById('btnGuardar');
+const fechaPagoInput = document.getElementById('fechaPago');
+const searchInput = document.getElementById('searchInput');
+const mensajeAccion = document.getElementById('mensajeAccion');
+const statsTotal = document.getElementById('statsTotal');
+const statsActivos = document.getElementById('statsActivos');
+const statsInactivos = document.getElementById('statsInactivos');
 
-// 1. LEER: Función para traer los socios y armar la tabla
+let sociosCache = [];
+
+function formatDate(fecha) {
+  if (!fecha) return 'Sin pago';
+  // Si viene con formato ISO de la base de datos lo limpiamos para mostrar local
+  const date = new Date(fecha);
+  if (isNaN(date.getTime())) return 'Sin pago';
+  return date.toLocaleDateString('es-AR');
+}
+
 async function cargarSocios() {
   try {
     const respuesta = await fetch(API_URL);
     const socios = await respuesta.json();
-    
-    // Limpiamos la tabla antes de cargar
-    tablaBody.innerHTML = '';
-    
-    // Recorremos los socios y creamos las filas
-    socios.forEach(socio => {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>${socio.id}</td>
-        <td>${socio.nombre}</td>
-        <td>${socio.apellido}</td>
-        <td>${socio.dni}</td>
-        <td>${socio.plan}</td>
-        <td>${socio.estado ? 'Activo' : 'Inactivo'}</td>
-        <td>
-          <button class="btn-editar" onclick="editarSocio(${socio.id}, '${socio.nombre}', '${socio.apellido}', '${socio.dni}', '${socio.plan}')">Editar</button>
-          <button class="btn-eliminar" onclick="eliminarSocio(${socio.id})">Borrar</button>
-        </td>
-      `;
-      tablaBody.appendChild(tr);
-    });
+    sociosCache = socios;
+    renderSocios(sociosCache);
+    updateStats(sociosCache);
   } catch (error) {
-    console.error("Error al cargar los socios:", error);
+    console.error('Error al cargar los socios:', error);
   }
 }
 
-// 2. CREAR Y ACTUALIZAR: Qué pasa cuando apretamos "Guardar"
+function renderSocios(socios) {
+  tablaBody.innerHTML = '';
+
+  socios.forEach(socio => {
+    const tr = document.createElement('tr');
+    const estadoValue = socio.estado || 'Inactivo';
+    const badgeClass = estadoValue === 'Activo' ? 'estado-activo' : 'estado-inactivo';
+    const fechaPagoText = formatDate(socio.fechaPago);
+
+    tr.innerHTML = `
+      <td>${socio.id}</td>
+      <td>${socio.nombre}</td>
+      <td>${socio.apellido}</td>
+      <td>${socio.dni}</td>
+      <td>${socio.plan}</td>
+      <td>${fechaPagoText}</td>
+      <td>
+        <span class="estado-badge ${badgeClass}">${estadoValue}</span>
+      </td>
+      <td class="celda-acciones">
+        </td>
+    `;
+
+    const tdAcciones = tr.querySelector('.celda-acciones');
+
+    // Botón Cambiar Estado (Alternador rápido)
+    const btnEstado = document.createElement('button');
+    if (estadoValue === 'Activo') {
+      btnEstado.className = 'btn-inactivo';
+      btnEstado.textContent = 'Desactivar';
+      btnEstado.addEventListener('click', () => setEstado(socio.id, 'Inactivo'));
+    } else {
+      btnEstado.className = 'btn-activo';
+      btnEstado.textContent = 'Activar';
+      btnEstado.addEventListener('click', () => setEstado(socio.id, 'Activo'));
+    }
+
+    // Botón Editar clásico
+    const btnEditar = document.createElement('button');
+    btnEditar.className = 'btn-editar';
+    btnEditar.type = 'button';
+    btnEditar.textContent = 'Editar';
+    btnEditar.addEventListener('click', () => editarSocio(socio));
+
+    // Botón Borrar clásico
+    const btnEliminar = document.createElement('button');
+    btnEliminar.className = 'btn-eliminar';
+    btnEliminar.type = 'button';
+    btnEliminar.textContent = 'Borrar';
+    btnEliminar.addEventListener('click', () => eliminarSocio(socio.id));
+
+    // Estructuramos todos en la misma fila de acciones
+    tdAcciones.append(btnEstado, btnEditar, btnEliminar);
+    tablaBody.appendChild(tr);
+  });
+}
+
+function mostrarMensaje(texto, tipo = 'info') {
+  if (!mensajeAccion) return;
+  mensajeAccion.textContent = texto;
+  mensajeAccion.className = `mensaje-accion mensaje-${tipo}`;
+  mensajeAccion.classList.remove('hidden');
+  setTimeout(() => {
+    mensajeAccion.classList.add('hidden');
+  }, 2500);
+}
+
+function updateStats(socios) {
+  if (!statsTotal || !statsActivos || !statsInactivos) return;
+  statsTotal.textContent = socios.length;
+  statsActivos.textContent = socios.filter(s => s.estado === 'Activo').length;
+  statsInactivos.textContent = socios.filter(s => s.estado === 'Inactivo').length;
+}
+
+function filtrarSocios() {
+  const termino = searchInput.value.trim().toLowerCase();
+  if (!termino) {
+    renderSocios(sociosCache);
+    return;
+  }
+  const sociosFiltrados = sociosCache.filter(socio => {
+    return socio.nombre.toLowerCase().includes(termino) || socio.dni.toLowerCase().includes(termino);
+  });
+  renderSocios(sociosFiltrados);
+}
+
+searchInput.addEventListener('input', filtrarSocios);
+
 form.addEventListener('submit', async (e) => {
-  e.preventDefault(); // Evitamos que la página se recargue
-  
+  e.preventDefault();
   const id = socioIdInput.value;
   const socioData = {
     nombre: document.getElementById('nombre').value,
     apellido: document.getElementById('apellido').value,
     dni: document.getElementById('dni').value,
     plan: document.getElementById('plan').value,
-    estado: true
+    fechaPago: fechaPagoInput.value ? new Date(fechaPagoInput.value).toISOString() : new Date().toISOString()
   };
 
   try {
     if (id) {
-      // Si el input oculto tiene un ID, significa que estamos Editando (PUT)
       await fetch(`${API_URL}/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(socioData)
       });
     } else {
-      // Si no hay ID, es un socio Nuevo (POST)
       await fetch(API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(socioData)
       });
     }
-    
-    // Reseteamos el formulario y recargamos la tabla
+
     form.reset();
     socioIdInput.value = '';
     btnCancelar.classList.add('hidden');
     btnGuardar.textContent = 'Guardar Socio';
     cargarSocios();
-    
   } catch (error) {
-    alert("Hubo un error al guardar el socio en la base de datos.");
+    alert('Hubo un error al guardar el socio en la base de datos.');
   }
 });
 
-// 3. EDITAR: Preparamos el formulario con los datos del socio elegido
-window.editarSocio = (id, nombre, apellido, dni, plan) => {
-  socioIdInput.value = id;
-  document.getElementById('nombre').value = nombre;
-  document.getElementById('apellido').value = apellido;
-  document.getElementById('dni').value = dni;
-  document.getElementById('plan').value = plan;
-  
+window.editarSocio = (socio) => {
+  socioIdInput.value = socio.id;
+  document.getElementById('nombre').value = socio.nombre;
+  document.getElementById('apellido').value = socio.apellido;
+  document.getElementById('dni').value = socio.dni;
+  document.getElementById('plan').value = socio.plan;
+  fechaPagoInput.value = socio.fechaPago ? socio.fechaPago.split('T')[0] : '';
+
   btnGuardar.textContent = 'Actualizar Socio';
   btnCancelar.classList.remove('hidden');
 };
 
-// Botón para cancelar la edición y limpiar todo
 btnCancelar.addEventListener('click', () => {
   form.reset();
   socioIdInput.value = '';
@@ -101,17 +179,29 @@ btnCancelar.addEventListener('click', () => {
   btnCancelar.classList.add('hidden');
 });
 
-// 4. BORRAR: Eliminar un socio de la base de datos
 window.eliminarSocio = async (id) => {
   if (confirm('¿Estás seguro de que querés dar de baja a este socio?')) {
     try {
       await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
-      cargarSocios(); // Recargamos la tabla
+      cargarSocios();
     } catch (error) {
-      alert("Error al intentar borrar.");
+      alert('Error al intentar borrar.');
     }
   }
 };
 
-// Al arrancar la página, cargamos los datos por primera vez
+window.setEstado = async (id, estadoDeseado) => {
+  try {
+    const response = await fetch(`${API_URL}/${id}/estado`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ estado: estadoDeseado })
+    });
+    if (!response.ok) throw new Error('No se pudo cambiar el estado');
+    cargarSocios();
+  } catch (error) {
+    console.error('Error al cambiar el estado:', error);
+  }
+};
+
 cargarSocios();

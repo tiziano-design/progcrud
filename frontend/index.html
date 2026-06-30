@@ -10,6 +10,27 @@
   <div class="container">
     <h1>Gestión de Socios - Gimnasio</h1>
 
+    <div class="dashboard-cards">
+      <div class="card total">
+        <span>Total de Socios</span>
+        <strong id="statsTotal">0</strong>
+      </div>
+      <div class="card activos">
+        <span>Socios Activos</span>
+        <strong id="statsActivos">0</strong>
+      </div>
+      <div class="card inactivos">
+        <span>Socios Inactivos</span>
+        <strong id="statsInactivos">0</strong>
+      </div>
+    </div>
+
+    <div class="search-container">
+      <input id="searchInput" type="text" placeholder="Buscar por nombre o DNI..." />
+    </div>
+
+    <div id="mensajeAccion" class="mensaje-accion hidden"></div>
+
     <form id="socioForm">
       <input type="hidden" id="socioId">
       <div class="form-group">
@@ -25,6 +46,9 @@
           <option value="Crossfit">Crossfit</option>
         </select>
       </div>
+      <div class="form-group">
+        <input type="date" id="fechaPago" placeholder="Fecha de pago">
+      </div>
       <button type="submit" id="btnGuardar">Guardar Socio</button>
       <button type="button" id="btnCancelar" class="hidden">Cancelar</button>
     </form>
@@ -37,6 +61,7 @@
           <th>Apellido</th>
           <th>DNI</th>
           <th>Plan</th>
+          <th>Fecha Pago</th>
           <th>Estado</th>
           <th>Acciones</th>
         </tr>

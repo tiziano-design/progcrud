@@ -12,13 +12,13 @@ body {
 
 /* Tarjeta principal con efecto "Glassmorphism" (vidrio) */
 .container {
-  max-width: 900px;
+  max-width: 960px;
   margin: 0 auto;
   background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(10px);
-  padding: 30px 40px;
-  border-radius: 15px;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(12px);
+  padding: 30px 35px 40px;
+  border-radius: 20px;
+  box-shadow: 0 14px 60px rgba(0, 0, 0, 0.45);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -28,9 +28,130 @@ h1 {
   color: #00ff88;
   text-transform: uppercase;
   letter-spacing: 2px;
-  margin-bottom: 30px;
+  margin-bottom: 25px;
   font-weight: 700;
-  text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+  text-shadow: 0 0 16px rgba(0, 255, 136, 0.35);
+}
+
+/* Dashboard Cards */
+.dashboard-cards {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 25px;
+}
+
+.card {
+  flex: 1 1 200px;
+  min-width: 180px;
+  position: relative;
+  padding: 24px 22px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top left, rgba(0, 255, 136, 0.2), transparent 40%);
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.card span {
+  display: block;
+  color: #a6ffd4;
+  font-size: 0.9rem;
+  margin-bottom: 12px;
+  letter-spacing: 0.6px;
+}
+
+.card strong {
+  display: block;
+  font-size: 2rem;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+}
+
+.card.total {
+  border-color: rgba(0, 206, 255, 0.45);
+}
+
+.card.activos {
+  border-color: rgba(0, 255, 136, 0.45);
+}
+
+.card.inactivos {
+  border-color: rgba(255, 71, 87, 0.45);
+}
+
+/* Buscador */
+.search-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+#searchInput {
+  width: 100%;
+  max-width: 560px;
+  padding: 14px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  font-size: 0.95rem;
+  outline: none;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+}
+
+#searchInput::placeholder {
+  color: #a9b2c7;
+}
+
+#searchInput:focus {
+  border-color: #00ff88;
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 22px rgba(0, 255, 136, 0.18);
+}
+
+/* Mensajes de feedback */
+#mensajeAccion {
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto 20px;
+  padding: 14px 18px;
+  border-radius: 14px;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: 0.7px;
+}
+
+.mensaje-accion.hidden {
+  display: none !important;
+}
+
+.mensaje-info {
+  background: rgba(255, 255, 255, 0.08);
+  color: #e9f8ff;
+  border: 1px solid rgba(0, 255, 136, 0.14);
+}
+
+.mensaje-success {
+  background: rgba(0, 255, 136, 0.12);
+  color: #d2ffd3;
+  border: 1px solid rgba(0, 255, 136, 0.25);
+}
+
+.mensaje-error {
+  background: rgba(255, 71, 87, 0.12);
+  color: #ffccd5;
+  border: 1px solid rgba(255, 71, 87, 0.25);
 }
 
 /* Contenedor del Formulario */
@@ -40,9 +161,9 @@ h1 {
   gap: 15px;
   margin-bottom: 40px;
   padding: 25px;
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(0, 0, 0, 0.18);
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .form-group {
@@ -53,10 +174,10 @@ h1 {
 /* Inputs y Selects */
 .form-group input, .form-group select {
   flex: 1;
-  padding: 12px 15px;
+  padding: 14px 16px;
   background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 10px;
   color: white;
   font-size: 14px;
   outline: none;
@@ -65,24 +186,22 @@ h1 {
 }
 
 .form-group input::placeholder {
-  color: #888;
+  color: #8c9cb5;
 }
 
-/* Efecto al hacer clic en un input */
 .form-group input:focus, .form-group select:focus {
   border-color: #00ff88;
-  background: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 0 8px rgba(0, 255, 136, 0.2);
+  background: rgba(255, 255, 255, 0.14);
+  box-shadow: 0 0 12px rgba(0, 255, 136, 0.18);
 }
 
-/* Las opciones del menú desplegable */
 .form-group select option {
   background: #1e222d;
   color: white;
 }
 
-/* Botón Principal */
-button {
+/* Botón Principal de Guardar */
+#btnGuardar {
   padding: 12px 20px;
   background: #00ff88;
   color: #000;
@@ -95,7 +214,7 @@ button {
   transition: all 0.3s ease;
 }
 
-button:hover {
+#btnGuardar:hover {
   background: #00cc6a;
   transform: translateY(-2px);
   box-shadow: 0 4px 15px rgba(0, 255, 136, 0.4);
@@ -103,9 +222,17 @@ button:hover {
 
 /* Botón Cancelar */
 #btnCancelar {
+  padding: 12px 20px;
   background: #ff4757;
   color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
   margin-top: 10px;
+  transition: all 0.3s ease;
 }
 
 #btnCancelar:hover {
@@ -145,7 +272,6 @@ td {
   color: #ddd;
 }
 
-/* Bordes redondeados para las filas de la tabla */
 tr td:first-child {
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;
@@ -161,14 +287,51 @@ tr:hover td {
   color: #fff;
 }
 
-/* Botones de acción en la tabla */
-.btn-editar, .btn-eliminar {
-  padding: 8px 12px;
-  font-size: 12px;
-  border-radius: 5px;
-  margin-right: 5px;
-  text-transform: none;
-  font-weight: 600;
+/* Badges de Estado Visuales */
+.estado-badge {
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  display: inline-block;
+}
+
+.estado-activo {
+  background: rgba(0, 255, 136, 0.18);
+  color: #99ffb3;
+}
+
+.estado-inactivo {
+  background: rgba(255, 71, 87, 0.18);
+  color: #ff9aa8;
+}
+
+/* === ALINEACIÓN SIMÉTRICA DE LOS BOTONES DE ACCIÓN === */
+.celda-acciones {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: flex-start;
+  white-space: nowrap;
+}
+
+/* Botones con el mismo tamaño exacto */
+.btn-editar, .btn-eliminar, .btn-activo, .btn-inactivo {
+  width: 95px; /* Forzamos ancho uniforme para que no se desfase */
+  height: 32px; /* Forzamos altura idéntica */
+  padding: 0;
+  font-size: 11px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
 }
 
 .btn-editar {
@@ -178,6 +341,7 @@ tr:hover td {
 
 .btn-editar:hover {
   background: #ff9f43;
+  transform: translateY(-1px);
   box-shadow: 0 4px 10px rgba(254, 202, 87, 0.3);
 }
 
@@ -188,5 +352,48 @@ tr:hover td {
 
 .btn-eliminar:hover {
   background: #ff6b81;
+  transform: translateY(-1px);
   box-shadow: 0 4px 10px rgba(255, 71, 87, 0.3);
+}
+
+.btn-activo {
+  background: #00b894;
+  color: white;
+}
+
+.btn-activo:hover {
+  background: #00a07f;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 184, 148, 0.3);
+}
+
+.btn-inactivo {
+  background: #d63031;
+  color: white;
+}
+
+.btn-inactivo:hover {
+  background: #c52826;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(214, 48, 49, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 780px) {
+  .form-group {
+    flex-direction: column;
+  }
+
+  .dashboard-cards {
+    flex-direction: column;
+  }
+
+  table {
+    font-size: 13px;
+  }
+
+  .celda-acciones {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }

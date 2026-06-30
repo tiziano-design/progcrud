@@ -1,4 +1,4 @@
-// This is your Prisma schema file, [TEST]
+// This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 // Get a free hosted Postgres database in seconds: `npx create-db`
@@ -13,11 +13,10 @@ datasource db {
 }
 
 model socio {
-  id        Int      @id @default(autoincrement())
-  nombre    String
-  apellido  String
-  dni       String
-  plan      String
-  estado    String   @default("Activo")
-  fechaPago DateTime @default(now())
+  id       Int    @id @default(autoincrement())
+  nombre   String
+  apellido String
+  dni      String
+  plan     String
+  estado   String @default("Activo")
 }

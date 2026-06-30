@@ -1,0 +1,158 @@
+// La dirección donde está escuchando tu backend
+const API_URL = 'http://localhost:3000/socios';
+
+// Agarramos los elementos de la pantalla
+const form = document.getElementById('socioForm');
+const tablaBody = document.querySelector('#tablaSocios tbody');
+const socioIdInput = document.getElementById('socioId');
+const btnCancelar = document.getElementById('btnCancelar');
+const btnGuardar = document.getElementById('btnGuardar');
+const searchInput = document.getElementById('searchInput');
+const statsTotal = document.getElementById('statsTotal');
+const statsActivos = document.getElementById('statsActivos');
+const statsInactivos = document.getElementById('statsInactivos');
+
+let allSocios = [];
+
+function updateStats(socios) {
+  const total = socios.length;
+  const activos = socios.filter(socio => socio.estado === 'Activo').length;
+  const inactivos = socios.filter(socio => socio.estado === 'Inactivo').length;
+
+  statsTotal.textContent = total;
+  statsActivos.textContent = activos;
+  statsInactivos.textContent = inactivos;
+}
+
+function renderSocios(socios) {
+  tablaBody.innerHTML = '';
+
+  socios.forEach(socio => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${socio.id}</td>
+      <td>${socio.nombre}</td>
+      <td>${socio.apellido}</td>
+      <td>${socio.dni}</td>
+      <td>${socio.plan}</td>
+      <td>${socio.estado}</td>
+      <td>
+        <button class="btn-editar" onclick="editarSocio(${socio.id}, '${socio.nombre}', '${socio.apellido}', '${socio.dni}', '${socio.plan}')">Editar</button>
+        <button class="btn-estado" onclick="toggleEstado(${socio.id})">
+          ${socio.estado === 'Activo' ? 'Poner Inactivo' : 'Poner Activo'}
+        </button>
+        <button class="btn-eliminar" onclick="eliminarSocio(${socio.id})">Borrar</button>
+      </td>
+    `;
+    tablaBody.appendChild(tr);
+  });
+
+  updateStats(socios);
+}
+
+function filtrarSocios() {
+  const filtro = searchInput.value.trim().toLowerCase();
+
+  if (!filtro) {
+    renderSocios(allSocios);
+    return;
+  }
+
+  const resultados = allSocios.filter(socio =>
+    socio.nombre.toLowerCase().includes(filtro) ||
+    socio.dni.toLowerCase().includes(filtro)
+  );
+
+  renderSocios(resultados);
+}
+
+async function cargarSocios() {
+  try {
+    const respuesta = await fetch(API_URL);
+    allSocios = await respuesta.json();
+    filtrarSocios();
+  } catch (error) {
+    console.error('Error al cargar los socios:', error);
+  }
+}
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  const id = socioIdInput.value;
+  const socioData = {
+    nombre: document.getElementById('nombre').value,
+    apellido: document.getElementById('apellido').value,
+    dni: document.getElementById('dni').value,
+    plan: document.getElementById('plan').value
+  };
+
+  try {
+    if (id) {
+      await fetch(`${API_URL}/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(socioData)
+      });
+    } else {
+      await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(socioData)
+      });
+    }
+
+    form.reset();
+    socioIdInput.value = '';
+    btnCancelar.classList.add('hidden');
+    btnGuardar.textContent = 'Guardar Socio';
+    cargarSocios();
+  } catch (error) {
+    alert('Hubo un error al guardar el socio en la base de datos.');
+    console.error(error);
+  }
+});
+
+window.editarSocio = (id, nombre, apellido, dni, plan) => {
+  socioIdInput.value = id;
+  document.getElementById('nombre').value = nombre;
+  document.getElementById('apellido').value = apellido;
+  document.getElementById('dni').value = dni;
+  document.getElementById('plan').value = plan;
+
+  btnGuardar.textContent = 'Actualizar Socio';
+  btnCancelar.classList.remove('hidden');
+};
+
+btnCancelar.addEventListener('click', () => {
+  form.reset();
+  socioIdInput.value = '';
+  btnGuardar.textContent = 'Guardar Socio';
+  btnCancelar.classList.add('hidden');
+});
+
+window.eliminarSocio = async (id) => {
+  if (confirm('¿Estás seguro de que querés dar de baja a este socio?')) {
+    try {
+      await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+      cargarSocios();
+    } catch (error) {
+      alert('Error al intentar borrar.');
+      console.error(error);
+    }
+  }
+};
+
+window.toggleEstado = async (id) => {
+  try {
+    await fetch(`${API_URL}/${id}/estado`, { method: 'PATCH' });
+    cargarSocios();
+  } catch (error) {
+    alert('Error al cambiar el estado.');
+    console.error(error);
+  }
+};
+
+searchInput.addEventListener('input', filtrarSocios);
+
+cargarSocios();
