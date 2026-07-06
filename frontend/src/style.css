@@ -12,14 +12,150 @@ body {
 
 /* Tarjeta principal con efecto "Glassmorphism" (vidrio) */
 .container {
-  max-width: 960px;
+  max-width: 1080px;
   margin: 0 auto;
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(14px);
+  padding: 30px 40px 45px;
+  border-radius: 24px;
+  box-shadow: 0 18px 75px rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.auth-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  width: 100%;
+  padding: 22px 24px;
+  margin-bottom: 24px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(0, 255, 136, 0.18);
+  border-radius: 18px;
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.22);
+}
+
+.login-form {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.login-form input,
+.login-form button {
+  min-height: 44px;
+}
+
+.login-form input {
+  flex: 1 1 220px;
+  max-width: 280px;
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 12px;
+  color: #fff;
+  font-size: 0.95rem;
+  transition: all 0.25s ease;
+}
+
+.login-form input:focus {
+  border-color: #00ff88;
+  background: rgba(255, 255, 255, 0.16);
+  box-shadow: 0 0 16px rgba(0, 255, 136, 0.14);
+}
+
+.login-form button {
+  min-width: 140px;
+  padding: 0 18px;
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+#btnLogin {
+  background: #00ff88;
+  color: #08171a;
+}
+
+#btnLogin:hover {
+  background: #00d16f;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(0, 255, 136, 0.2);
+}
+
+#btnLogout {
+  background: #ff4757;
+  color: #fff;
+}
+
+#btnLogout:hover {
+  background: #ff6b81;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(255, 71, 87, 0.2);
+}
+
+.login-status {
+  width: 100%;
+  max-width: 770px;
+  color: #cfeeff;
+  font-weight: 600;
+  text-align: center;
+  padding: 12px 16px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(0, 255, 136, 0.12);
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.login-status.success {
+  color: #0d3;
+  background: rgba(0, 255, 136, 0.12);
+  border-color: rgba(0, 255, 136, 0.25);
+}
+
+.login-status.error {
+  color: #ff9aa8;
+  background: rgba(255, 71, 87, 0.12);
+  border-color: rgba(255, 71, 87, 0.25);
+}
+
+.login-form.logged-in input,
+.login-form.logged-in #btnLogin {
+  display: none;
+}
+
+.login-form.logged-in {
+  justify-content: center;
+  gap: 18px;
+}
+
+.login-form.logged-in #btnLogout {
+  margin: 0 auto;
+}
+
+.login-help {
+  width: 100%;
+  max-width: 770px;
+  color: #a9d9ff;
+  font-size: 0.95rem;
+  text-align: center;
+  padding: 8px 16px;
+  border-radius: 12px;
   background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(12px);
-  padding: 30px 35px 40px;
-  border-radius: 20px;
-  box-shadow: 0 14px 60px rgba(0, 0, 0, 0.45);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px dashed rgba(0, 255, 136, 0.1);
+}
+
+.login-help strong {
+  color: #ffffff;
 }
 
 /* Título neón */
@@ -35,23 +171,25 @@ h1 {
 
 /* Dashboard Cards */
 .dashboard-cards {
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-bottom: 25px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(240px, 1fr));
+  gap: 22px;
+  justify-items: stretch;
+  margin-bottom: 28px;
 }
 
 .card {
-  flex: 1 1 200px;
-  min-width: 180px;
   position: relative;
-  padding: 24px 22px;
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 32px 28px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   overflow: hidden;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 22px 70px rgba(0, 0, 0, 0.24);
+  min-height: 160px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .card::before {
@@ -118,6 +256,38 @@ h1 {
   border-color: #00ff88;
   background: rgba(255, 255, 255, 0.15);
   box-shadow: 0 0 22px rgba(0, 255, 136, 0.18);
+}
+
+.auth-notice {
+  max-width: 960px;
+  margin: 0 auto 20px;
+  padding: 14px 18px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #cfeeff;
+  border: 1px solid rgba(0, 255, 136, 0.18);
+  text-align: center;
+  font-weight: 600;
+}
+
+input:disabled,
+select:disabled,
+button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.login-form input,
+.login-form button {
+  min-height: 48px;
+}
+
+.login-form input {
+  min-width: 240px;
+}
+
+.login-form button {
+  min-width: 150px;
 }
 
 /* Mensajes de feedback */
@@ -220,6 +390,10 @@ h1 {
   box-shadow: 0 4px 15px rgba(0, 255, 136, 0.4);
 }
 
+#appContent.hidden {
+  display: none !important;
+}
+
 /* Botón Cancelar */
 #btnCancelar {
   padding: 12px 20px;
@@ -247,14 +421,25 @@ h1 {
 /* Tabla de Socios */
 table {
   width: 100%;
+  table-layout: fixed;
   border-collapse: separate;
-  border-spacing: 0 8px;
-  margin-top: 20px;
+  border-spacing: 0 6px;
+  margin-top: 16px;
+}
+
+.container {
+  min-height: calc(100vh - 80px);
+}
+table, th, td {
+  box-sizing: border-box;
 }
 
 th, td {
-  padding: 15px;
+  padding: 10px 12px;
   text-align: left;
+  word-break: break-word;
+  white-space: normal;
+  vertical-align: middle;
 }
 
 th {
@@ -262,29 +447,56 @@ th {
   color: #00ff88;
   font-weight: 600;
   text-transform: uppercase;
-  font-size: 13px;
+  font-size: 12px;
   letter-spacing: 1px;
   border-bottom: 2px solid rgba(255, 255, 255, 0.1);
 }
 
 td {
-  background: rgba(0, 0, 0, 0.25);
+  background: rgba(0, 0, 0, 0.22);
   color: #ddd;
 }
 
+tr {
+  transition: background 0.2s ease;
+}
+
 tr td:first-child {
-  border-top-left-radius: 8px;
-  border-bottom-left-radius: 8px;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
 }
 
 tr td:last-child {
-  border-top-right-radius: 8px;
-  border-bottom-right-radius: 8px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 tr:hover td {
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.45);
   color: #fff;
+}
+
+th:nth-child(1), td:nth-child(1) {
+  width: 6%;
+}
+
+th:nth-child(2), td:nth-child(2),
+th:nth-child(3), td:nth-child(3) {
+  width: 16%;
+}
+
+th:nth-child(4), td:nth-child(4),
+th:nth-child(5), td:nth-child(5),
+th:nth-child(6), td:nth-child(6) {
+  width: 14%;
+}
+
+th:nth-child(7), td:nth-child(7) {
+  width: 11%;
+}
+
+th:nth-child(8), td:nth-child(8) {
+  width: 16%;
 }
 
 /* Badges de Estado Visuales */
@@ -310,17 +522,18 @@ tr:hover td {
 /* === ALINEACIÓN SIMÉTRICA DE LOS BOTONES DE ACCIÓN === */
 .celda-acciones {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   align-items: center;
   justify-content: flex-start;
   white-space: nowrap;
+  flex-wrap: wrap;
 }
 
 /* Botones con el mismo tamaño exacto */
 .btn-editar, .btn-eliminar, .btn-activo, .btn-inactivo {
-  width: 95px; /* Forzamos ancho uniforme para que no se desfase */
-  height: 32px; /* Forzamos altura idéntica */
-  padding: 0;
+  min-width: 82px;
+  height: 30px;
+  padding: 0 8px;
   font-size: 11px;
   border-radius: 6px;
   text-transform: uppercase;
@@ -331,7 +544,7 @@ tr:hover td {
   justify-content: center;
   border: none;
   cursor: pointer;
-  transition: all 0.25s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .btn-editar {
@@ -378,6 +591,38 @@ tr:hover td {
   box-shadow: 0 4px 10px rgba(214, 48, 49, 0.3);
 }
 
+#feedback-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.alerta {
+  padding: 15px 25px;
+  border-radius: 8px;
+  font-weight: bold;
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  transition: opacity 0.5s ease;
+  backdrop-filter: blur(5px);
+}
+
+.alerta.success {
+  background: rgba(0, 255, 128, 0.2);
+  border: 1px solid #00ff80;
+  text-shadow: 0 0 10px #00ff80;
+}
+
+.alerta.error {
+  background: rgba(255, 0, 85, 0.2);
+  border: 1px solid #ff0055;
+  text-shadow: 0 0 10px #ff0055;
+}
+
 /* Responsive */
 @media (max-width: 780px) {
   .form-group {
@@ -389,11 +634,19 @@ tr:hover td {
   }
 
   table {
-    font-size: 13px;
+    font-size: 12px;
+  }
+
+  th, td {
+    padding: 10px 8px;
   }
 
   .celda-acciones {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .btn-editar, .btn-eliminar, .btn-activo, .btn-inactivo {
+    min-width: 100%;
   }
 }
